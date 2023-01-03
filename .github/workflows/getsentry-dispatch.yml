@@ -24,4 +24,4 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: echo
-        run: echo "It's happening\!"
+        run: echo "It's happening!"
