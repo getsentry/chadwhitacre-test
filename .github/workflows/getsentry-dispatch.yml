@@ -1,0 +1,27 @@
+# Dispatch a request to getsentry to run getsentry test suites
+name: getsentry dispatcher test
+
+on:
+  # XXX: We are using `pull_request_target` instead of `pull_request` because we want
+  # this to run on forks.  It allows forks to access secrets safely by
+  # only running workflows from the main branch. Prefer to use `pull_request` when possible.
+  #
+  # See https://github.com/getsentry/sentry/pull/21600 for more details
+  pull_request_target:
+    types: [labeled, opened, reopened, synchronize]
+
+# disable all other special privileges
+permissions:
+  # needed for `actions/checkout` to clone the code
+  contents: read
+  # needed to remove the pull-request label
+  pull-requests: write
+
+jobs:
+  dispatch:
+    if: github.event.action != 'labeled' || github.event.label.name == 'Trigger: getsentry tests'
+    name: getsentry dispatch
+    runs-on: ubuntu-20.04
+    steps:
+      - name: echo
+        run: echo "It's happening\!"
